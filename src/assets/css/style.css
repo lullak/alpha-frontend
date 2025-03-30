@@ -108,6 +108,66 @@
     --form-error-message-text-color: var(--red-dark);
     --form-error-message-background-color: var(--red-light);
     --form-error-message-border-color: var(--red-light);
+
+    --card-project-color: var(--gray-200)
+}
+/* Generead med hjälp av ai för att slippa mappa ut alla färger självmant */
+
+[data-theme="dark"] {
+    --background-color: var(--dark-100);
+    --content-background-color: var(--dark-200);
+    --sidebar-background-color: var(--dark-300);
+
+    --text-color: var(--white-100);
+    --text-muted-color: var(--gray-600);
+    --text-extra-muted-color: var(--gray-500);
+    --text-headline-color: var(--white);
+
+    --border-color: var(--gray-600);
+    --border-focus-color: var(--blue-semilight);
+
+    --btn-text-color: var(--white);
+    --btn-border-color: var(--blue-dark);
+    --btn-background-color: var(--blue-dark);
+    --btn-hover-text-color: var(--white);
+    --btn-hover-border-color: var(--blue);
+    --btn-hover-background-color: var(--blue);
+
+    --link-color: var(--blue-light);
+    --link-hover-color: var(--blue-semilight);
+
+    --navlink-text-color: var(--white);
+    --navlink-text-hover-color: var(--blue-light);
+    --navlink-text-active-color: var(--blue-light);
+    --navlink-background-color: transparent;
+    --navlink-background-hover-color: var(--dark-opacity-20);
+    --navlink-background-active-color: var(--dark-opacity-60);
+
+    --table-header-background-color: var(--dark-400);
+    --table-header-text-color: var(--white);
+    --table-tbody-tr-background-hover-color: var(--dark-opacity-20);
+
+    --modal-screen-background-color: rgba(0, 0, 0, 0.8);
+    --modal-background-color: var(--dark-300);
+
+    --form-text-color: var(--white);
+    --form-border-color: var(--gray-600);
+    --form-background-color: var(--dark-300);
+    --form-label-color: var(--white);
+    --form-input-text-color: var(--white);
+    --form-input-placeholder-color: var(--gray-500);
+    --form-input-background-color: var(--dark-400);
+    --form-input-border-color: var(--gray-600);
+    --form-input-border-focus-color: var(--blue-semilight);
+    --form-error-input-text-color: var(--white);
+    --form-error-input-background-color: var(--dark-300);
+    --form-error-input-border-color: var(--red-semilight);
+    --form-error-input-border-focus-color: var(--blue-semilight);
+    --form-error-message-text-color: var(--red-light);
+    --form-error-message-background-color: var(--red-dark);
+    --form-error-message-border-color: var(--red-dark);
+
+    --card-project-color: var(--dark-200);
 }
 
 /* structure */
@@ -634,6 +694,9 @@ section > .content {
         width: 30%;
     }
 }
+
+
+/* En del av css är generad med hjälp av ai för att få en snabb grund på mall som sen har reviderats rejält */
 /* projects */
 .containerproject {
     display: grid;
@@ -655,7 +718,7 @@ section > .content {
   
   .cardproject {
     position: relative;
-    background-color: var(--gray-200);
+    background-color: var(--card-project-color);
     border-radius: 16px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -727,7 +790,7 @@ section > .content {
     position: absolute;
     top: 40px;
     right: 10px;
-    background-color: var(--white-100);
+    background-color: var(--background-color);
     border-radius: 8px;
     z-index: 1000;
     padding: 10px;
@@ -748,18 +811,19 @@ section > .content {
   }
   
   .dropdown-item-edit {
-    color: var(--dark-100);
+    color: var(--text-color);
   }
   .dropdown-item-delete {
     color: var(--red);
   }
 
   .dropdown-item:hover {
-    background-color: var(--gray-200);
+    background-color: var(--background-color);
   }
   
   .dropdown-item i {
     font-size: 16px;
+    background-color: var(--background-color);
   }
 
   .project-image {
@@ -770,7 +834,7 @@ section > .content {
     height: 56px;
     border-radius: 8px;
     overflow: hidden;
-    background-color: var(--gray-300);
+    background-color: var(--background-color);
   }
   
   .project-image img {
@@ -829,6 +893,8 @@ section > .content {
     font-size: 1rem;
     outline: none;
     transition: border-color 0.2s ease-in-out;
+    color: var(--text-color);
+    background-color: var(--background-color);
   }
   
   .form-group input:focus,
@@ -905,6 +971,7 @@ section > .content {
     -moz-appearance: none; 
     background: none; 
     padding-right: 2rem; 
+    background-color: var(--background-color);
   }
   
   .select-wrapper::after {
@@ -940,14 +1007,14 @@ section > .content {
   .tabs button {
     padding: 10px 20px;
     border: none;
-    background-color: transparent; /* Make the background transparent */
+    background-color: transparent;
     cursor: pointer;
     border-radius: 5px;
-    color: var(--gray-800); /* Use the default text color */
-    font-size: 14px; /* Adjust font size for better readability */
-    font-weight: 600; /* Make the text bold */
+    color: var(--gray-800); 
+    font-size: 14px; 
+    font-weight: 600; 
   }
   
   .tabs button.active {
-    color: var(--blue); /* White text for the active tab */
+    color: var(--blue); 
   }
