@@ -328,7 +328,7 @@ const Projects = () => {
             <label htmlFor="description">Description</label>
             <textarea
               id="description"
-              placeholder="Enter description"
+              placeholder="Type something"
               value={newProject.description}
               onChange={(e) =>
                 setNewProject({ ...newProject, description: e.target.value })
