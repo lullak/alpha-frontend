@@ -37,7 +37,7 @@ const Projects = () => {
     if (res.ok) {
       const data = await res.json();
       const sortedProjects = data.sort(
-        (a, b) => new Date(a.startDate) - new Date(b.startDate)
+        (a, b) => new Date(b.startDate) - new Date(a.startDate)
       );
       setProjects(sortedProjects);
     }
@@ -328,7 +328,7 @@ const Projects = () => {
             <label htmlFor="description">Description</label>
             <textarea
               id="description"
-              placeholder="Type something"
+              placeholder="Enter description"
               value={newProject.description}
               onChange={(e) =>
                 setNewProject({ ...newProject, description: e.target.value })
@@ -401,7 +401,6 @@ const Projects = () => {
                       e.target.value === "" ? null : Number(e.target.value),
                   })
                 }
-                step="0.01"
               />
             </div>
           </div>
