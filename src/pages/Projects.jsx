@@ -224,7 +224,10 @@ const Projects = () => {
         id="addProjectModal"
         title={isEditMode ? "Edit Project" : "Add Project"}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setNewProject(initialProjectState());
+          setIsModalOpen(false);
+        }}
       >
         <form onSubmit={isEditMode ? handleUpdateProject : handleAddProject}>
           <div className="form-group image-picker">

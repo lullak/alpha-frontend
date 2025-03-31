@@ -113,7 +113,7 @@
 }
 /* Generead med hjälp av ai för att slippa mappa ut alla färger självmant */
 
-[data-theme="dark"] {
+[data-theme="light"] {
     --background-color: var(--dark-100);
     --content-background-color: var(--dark-200);
     --sidebar-background-color: var(--dark-300);

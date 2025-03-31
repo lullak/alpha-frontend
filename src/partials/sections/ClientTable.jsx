@@ -35,7 +35,7 @@ const ClientTables = ({ client, onEdit, onDelete }) => {
           <td>
             <div className="client-info">
               <img
-                src={client.image || fallbackImage}
+                src={client.clientImage || fallbackImage}
                 alt="Client"
                 width="32"
                 height="32"
@@ -44,21 +44,29 @@ const ClientTables = ({ client, onEdit, onDelete }) => {
               <div className="client-details">
                 <span className="client-name">{client.clientName}</span>
                 <span className="client-email">
-                  {client.email || "No Email"}
+                  {client.clientEmail || "No Email"}
                 </span>
               </div>
             </div>
           </td>
-          <td>{client.location || "N/A"}</td>
-          <td>{client.phone || "N/A"}</td>
-          <td>{client.date || "N/A"}</td>
+          <td>{client.information?.clientBillingCity || "N/A"}</td>
+          <td>{client.clientPhone || "N/A"}</td>
+          <td>
+            {client.created
+              ? new Date(client.created).toLocaleDateString()
+              : "N/A"}
+          </td>
           <td className="status-client">
             <span
               className={`status-text ${
-                client.status === "active" ? "status-active" : "status-inactive"
+                client.projects && client.projects.length > 0
+                  ? "status-active"
+                  : "status-inactive"
               }`}
             >
-              {client.status || "N/A"}
+              {client.projects && client.projects.length > 0
+                ? "Active"
+                : "Inactive"}
             </span>
           </td>
           <td style={{ position: "relative" }}>
