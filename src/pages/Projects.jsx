@@ -12,26 +12,22 @@ const Projects = () => {
   const [editProjectId, setEditProjectId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
-  const [newProject, setNewProject] = useState({
-    image: "",
-    projectName: "",
-    clientId: "",
-    description: "",
-    startDate: "",
-    endDate: "",
-    budget: null,
-    userId: "",
-  });
+  const [newProject, setNewProject] = useState(initialProjectState());
 
-  const filteredProjects = projects.filter((project) => {
-    if (activeTab === "all") {
-      return project.status.id === 1 || project.status.id === 2;
-    }
-    if (activeTab === "completed") {
-      return project.status.id === 2;
-    }
-    return true;
-  });
+  function initialProjectState() {
+    return {
+      image: "",
+      projectName: "",
+      clientId: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      budget: null,
+      userId: "",
+    };
+  }
+
+  // api fetches
   const getProjects = async () => {
     const res = await fetch("https://localhost:7030/api/projects");
     if (res.ok) {
@@ -42,6 +38,29 @@ const Projects = () => {
       setProjects(sortedProjects);
     }
   };
+
+  const getClients = async () => {
+    const res = await fetch("https://localhost:7030/api/clients");
+    if (res.ok) {
+      const data = await res.json();
+      setClients(data);
+    }
+  };
+
+  const getUsers = async () => {
+    const res = await fetch("https://localhost:7030/api/users");
+    if (res.ok) {
+      const data = await res.json();
+      setUsers(data);
+    }
+  };
+
+  const filteredProjects = projects.filter((project) => {
+    if (activeTab === "completed") {
+      return project.status.id === 2;
+    }
+    return true;
+  });
 
   const handleEditProject = (project) => {
     setIsEditMode(true);
@@ -91,35 +110,10 @@ const Projects = () => {
     if (res.ok) {
       await getProjects();
     }
-    setNewProject({
-      image: "",
-      projectName: "",
-      clientId: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      budget: null,
-      userId: "",
-    });
+    setNewProject(initialProjectState());
     setIsEditMode(false);
     setEditProjectId(null);
     setIsModalOpen(false);
-  };
-
-  const getClients = async () => {
-    const res = await fetch("https://localhost:7030/api/clients");
-    if (res.ok) {
-      const data = await res.json();
-      setClients(data);
-    }
-  };
-
-  const getUsers = async () => {
-    const res = await fetch("https://localhost:7030/api/users");
-    if (res.ok) {
-      const data = await res.json();
-      setUsers(data);
-    }
   };
 
   const handleDeleteProject = (projectId) => {
@@ -169,17 +163,7 @@ const Projects = () => {
     if (res.ok) {
       await getProjects();
     }
-    setNewProject({
-      image: "",
-      projectName: "",
-      clientId: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      budget: null,
-      userId: "",
-    });
-
+    setNewProject(initialProjectState());
     setIsModalOpen(false);
   };
   return (
@@ -191,16 +175,7 @@ const Projects = () => {
           text="Add Project"
           onClick={() => {
             setIsEditMode(false);
-            setNewProject({
-              image: "",
-              projectName: "",
-              clientId: "",
-              description: "",
-              startDate: "",
-              endDate: "",
-              budget: null,
-              userId: "",
-            });
+            setNewProject(initialProjectState());
             setIsModalOpen(true);
           }}
         />
