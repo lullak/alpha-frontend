@@ -137,7 +137,6 @@ const Projects = () => {
   const handleAddProject = async (e) => {
     e.preventDefault();
 
-    // Validate required fields
     if (
       !newProject.projectName ||
       !newProject.startDate ||
