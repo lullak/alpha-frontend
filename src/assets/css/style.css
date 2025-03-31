@@ -85,7 +85,7 @@
     --navlink-background-hover-color: var(--blue-light);
     --navlink-background-active-color: var(--blue-light-opacity);
     
-    --table-header-background-color: var(--white);
+    --table-header-background-color: var(--gray-200);
     --table-header-text-color: var(--gray-800);
     --table-tbody-tr-background-hover-color: var(--blue-accent-10);
     
@@ -696,7 +696,7 @@ section > .content {
 }
 
 
-/* En del av css är generad med hjälp av ai för att få en snabb grund på mall som sen har reviderats rejält */
+/* En del av css för är generad med hjälp av ai för att få en snabb grund på mall som sen har reviderats rejält */
 /* projects */
 .containerproject {
     display: grid;
@@ -715,6 +715,14 @@ section > .content {
       grid-template-columns: repeat(3, 1fr); 
     }
   }
+
+  .container-client {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); 
+    gap: 20px;
+    padding: 20px;
+  }
+ 
   
   .cardproject {
     position: relative;
@@ -762,6 +770,20 @@ section > .content {
     position: absolute;
     top: 10px;
     right: 10px;
+    font-size: 1.7em;
+    color: var(--gray-800);
+    border-radius: 10px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+    border: none; 
+  }
+
+  .ellipsisTable {
     font-size: 1.7em;
     color: var(--gray-800);
     border-radius: 10px;
@@ -825,6 +847,119 @@ section > .content {
     font-size: 16px;
     background-color: var(--background-color);
   }
+
+  /*Dropdown client*/
+  .dropdown-menu-client {
+    position: absolute;
+    right: 60px;
+    background-color: var(--background-color);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+  }
+
+  .dropdown-item-client{
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropdown-item-edit-client {
+    color: var(--text-color);
+  }
+  .dropdown-item-delete-client {
+    color: var(--red);
+  }
+
+  .dropdown-item-client:hover {
+    background-color: var(--background-color);
+  }
+  
+  .dropdown-item-client i {
+    font-size: 16px;
+    background-color: var(--background-color);
+  }
+
+  
+/* table props */
+.client-table {
+    width: 100%;
+    border-collapse: collapse; 
+    font-size: 0.9rem;
+
+}
+
+.client-table thead {
+    background-color: var(--table-header-background-color); 
+    color: var(--table-header-text-color); 
+    text-align-last: left;
+}
+
+.client-table th,
+.client-table td {
+    padding: 12px; 
+    text-align: left; 
+    
+}
+
+
+.client-info {
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.client-avatar {
+    border-radius: 50%; 
+}
+
+.client-details {
+    display: flex;
+    flex-direction: column; 
+}
+
+.client-name {
+    font-weight: bold; 
+    color: var(--text-color); 
+}
+
+.client-email {
+    font-size: 0.9em; 
+    color: var(--text-muted-color); 
+}
+
+.status-client {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .status-text {
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    display: inline-block; 
+  }
+  
+  .status-active {
+    background-color: var(--table-header-background-color); 
+    color: var(--green); 
+  }
+  
+  .status-inactive {
+    background-color: var(--table-header-background-color); 
+    color: var(--red); 
+  }
+
+/*project image*/
 
   .project-image {
     position: absolute;
