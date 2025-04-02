@@ -10,6 +10,7 @@ const Clients = () => {
   const [editClientId, setEditClientId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newClient, setNewClient] = useState(initialClientState());
+  const [validationErrors, setValidationErrors] = useState({});
 
   function initialClientState() {
     return {
@@ -60,14 +61,31 @@ const Clients = () => {
   const handleUpdateClient = async (e) => {
     e.preventDefault();
 
-    if (
-      !newClient.clientName ||
-      !newClient.clientEmail ||
-      !newClient.clientPhone ||
-      !newClient.clientBillingCity
-    ) {
+    const errors = {};
+    const phoneNumberRegex = /^[0-9]{10}$/;
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!newClient.clientName.trim()) {
+      errors.clientName = "Client Name cannot be empty.";
+    }
+    if (!newClient.clientEmail.trim()) {
+      errors.clientEmail = "Client Email cannot be empty.";
+    } else if (!emailRegex.test(newClient.clientEmail)) {
+      errors.clientEmail = "Must be a valid email address.";
+    }
+    if (!newClient.clientPhone.trim()) {
+      errors.clientPhone = "Client Phone cannot be empty.";
+    } else if (!phoneNumberRegex.test(newClient.clientPhone)) {
+      errors.clientPhone = "Phone Number must be 10 digits.";
+    }
+    if (!newClient.clientBillingCity.trim()) {
+      errors.clientBillingCity = "Client Billing City cannot be empty.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
+    setValidationErrors({});
 
     const clientToUpdate = {
       id: editClientId,
@@ -99,19 +117,37 @@ const Clients = () => {
     setIsEditMode(false);
     setEditClientId(null);
     setIsModalOpen(false);
+    setValidationErrors({});
   };
 
   const handleAddClient = async (e) => {
     e.preventDefault();
 
-    if (
-      !newClient.clientName ||
-      !newClient.clientEmail ||
-      !newClient.clientPhone ||
-      !newClient.clientBillingCity
-    ) {
+    const errors = {};
+    const phoneNumberRegex = /^[0-9]{10}$/;
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!newClient.clientName.trim()) {
+      errors.clientName = "Client Name cannot be empty.";
+    }
+    if (!newClient.clientEmail.trim()) {
+      errors.clientEmail = "Client Email cannot be empty.";
+    } else if (!emailRegex.test(newClient.clientEmail)) {
+      errors.clientEmail = "Must be a valid email address.";
+    }
+    if (!newClient.clientPhone.trim()) {
+      errors.clientPhone = "Client Phone cannot be empty.";
+    } else if (!phoneNumberRegex.test(newClient.clientPhone)) {
+      errors.clientPhone = "Phone Number must be 10 digits.";
+    }
+    if (!newClient.clientBillingCity.trim()) {
+      errors.clientBillingCity = "Client Billing City cannot be empty.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
+    setValidationErrors({});
 
     const clientToAdd = {
       clientImage: newClient.clientImage || fallbackImage,
@@ -192,9 +228,13 @@ const Clients = () => {
           onClose={() => {
             setNewClient(initialClientState());
             setIsModalOpen(false);
+            setValidationErrors({});
           }}
         >
-          <form onSubmit={isEditMode ? handleUpdateClient : handleAddClient}>
+          <form
+            noValidate
+            onSubmit={isEditMode ? handleUpdateClient : handleAddClient}
+          >
             <div className="form-group image-picker">
               <div
                 className="image-picker-container"
@@ -243,6 +283,7 @@ const Clients = () => {
                 }
                 required
               />
+              <p className="error">{validationErrors.clientName}</p>
             </div>
 
             <div className="form-group">
@@ -257,6 +298,7 @@ const Clients = () => {
                 }
                 required
               />
+              <p className="error">{validationErrors.clientEmail}</p>
             </div>
 
             <div className="form-group">
@@ -271,6 +313,7 @@ const Clients = () => {
                 }
                 required
               />
+              <p className="error">{validationErrors.clientPhone}</p>
             </div>
             <div className="form-group">
               <label htmlFor="clientBillingAddress">Billing Address</label>
@@ -322,6 +365,7 @@ const Clients = () => {
                     }
                     required
                   />
+                  <p className="error">{validationErrors.clientBillingCity}</p>
                 </div>
               </div>
             </div>

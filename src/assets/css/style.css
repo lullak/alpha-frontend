@@ -969,7 +969,6 @@ section > .content {
     height: 56px;
     border-radius: 8px;
     overflow: hidden;
-    background-color: var(--background-color);
   }
   
   .project-image img {
@@ -1153,3 +1152,8 @@ section > .content {
   .tabs button.active {
     color: var(--blue); 
   }
+
+.error {
+  color: red;
+  font-size: 0.6rem;
+}

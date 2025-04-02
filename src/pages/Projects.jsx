@@ -13,6 +13,7 @@ const Projects = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [newProject, setNewProject] = useState(initialProjectState());
+  const [validationErrors, setValidationErrors] = useState({});
 
   function initialProjectState() {
     return {
@@ -81,14 +82,26 @@ const Projects = () => {
   const handleUpdateProject = async (e) => {
     e.preventDefault();
 
-    if (
-      !newProject.projectName ||
-      !newProject.startDate ||
-      !newProject.clientId ||
-      !newProject.userId
-    ) {
+    const errors = {};
+
+    if (!newProject.projectName.trim()) {
+      errors.projectName = "Project Name cannot be empty.";
+    }
+    if (!newProject.startDate) {
+      errors.startDate = "Start Date is required.";
+    }
+    if (!newProject.clientId) {
+      errors.clientId = "Client must be selected.";
+    }
+    if (!newProject.userId) {
+      errors.userId = "Project Owner must be selected.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
+    setValidationErrors({});
 
     const projectToUpdate = {
       ...newProject,
@@ -111,6 +124,7 @@ const Projects = () => {
       await getProjects();
     }
     setNewProject(initialProjectState());
+    setValidationErrors({});
     setIsEditMode(false);
     setEditProjectId(null);
     setIsModalOpen(false);
@@ -131,14 +145,26 @@ const Projects = () => {
   const handleAddProject = async (e) => {
     e.preventDefault();
 
-    if (
-      !newProject.projectName ||
-      !newProject.startDate ||
-      !newProject.clientId ||
-      !newProject.userId
-    ) {
+    const errors = {};
+
+    if (!newProject.projectName.trim()) {
+      errors.projectName = "Project Name cannot be empty.";
+    }
+    if (!newProject.startDate) {
+      errors.startDate = "Start Date is required.";
+    }
+    if (!newProject.clientId) {
+      errors.clientId = "Client must be selected.";
+    }
+    if (!newProject.userId) {
+      errors.userId = "Project Owner must be selected.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
+    setValidationErrors({});
 
     const projectToAdd = {
       image: newProject.image || fallbackImage,
@@ -152,6 +178,7 @@ const Projects = () => {
       clientId: newProject.clientId,
       userId: newProject.userId,
     };
+
     const res = await fetch("https://localhost:7030/api/projects", {
       method: "POST",
       headers: {
@@ -227,9 +254,13 @@ const Projects = () => {
         onClose={() => {
           setNewProject(initialProjectState());
           setIsModalOpen(false);
+          setValidationErrors({});
         }}
       >
-        <form onSubmit={isEditMode ? handleUpdateProject : handleAddProject}>
+        <form
+          noValidate
+          onSubmit={isEditMode ? handleUpdateProject : handleAddProject}
+        >
           <div className="form-group image-picker">
             <div
               className="image-picker-container"
@@ -278,6 +309,7 @@ const Projects = () => {
               }
               required
             />
+            <p className="error">{validationErrors.projectName}</p>
           </div>
 
           <div className="form-group">
@@ -298,6 +330,7 @@ const Projects = () => {
                   </option>
                 ))}
               </select>
+              <p className="error">{validationErrors.clientId}</p>
             </div>
           </div>
 
@@ -326,6 +359,7 @@ const Projects = () => {
                   }
                   required
                 />
+                <p className="error">{validationErrors.startDate}</p>
               </div>
               <div>
                 <label htmlFor="endDate">End Date</label>
@@ -359,6 +393,7 @@ const Projects = () => {
                   </option>
                 ))}
               </select>
+              <p className="error">{validationErrors.userId}</p>
             </div>
           </div>
 
