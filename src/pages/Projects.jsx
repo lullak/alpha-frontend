@@ -29,31 +29,38 @@ const Projects = () => {
   }
 
   // api fetches
+
   const getProjects = async () => {
-    const res = await fetch("https://localhost:7030/api/projects");
-    if (res.ok) {
-      const data = await res.json();
-      const sortedProjects = data.sort(
-        (a, b) => new Date(b.startDate) - new Date(a.startDate)
-      );
-      setProjects(sortedProjects);
-    }
+    const res = await fetch("https://localhost:7030/api/projects", {
+      method: "GET",
+      headers: {
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      },
+    });
+    const data = await res.json();
+    setProjects(data);
   };
 
   const getClients = async () => {
-    const res = await fetch("https://localhost:7030/api/clients");
-    if (res.ok) {
-      const data = await res.json();
-      setClients(data);
-    }
+    const res = await fetch("https://localhost:7030/api/clients", {
+      method: "GET",
+      headers: {
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      },
+    });
+    const data = await res.json();
+    setClients(data);
   };
 
   const getUsers = async () => {
-    const res = await fetch("https://localhost:7030/api/users");
-    if (res.ok) {
-      const data = await res.json();
-      setUsers(data);
-    }
+    const res = await fetch("https://localhost:7030/api/users", {
+      method: "GET",
+      headers: {
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      },
+    });
+    const data = await res.json();
+    setUsers(data);
   };
 
   const filteredProjects = projects.filter((project) => {
@@ -117,6 +124,7 @@ const Projects = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
       body: JSON.stringify(projectToUpdate),
     });
@@ -183,6 +191,7 @@ const Projects = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
       body: JSON.stringify(projectToAdd),
     });

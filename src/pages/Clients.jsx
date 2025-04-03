@@ -27,11 +27,14 @@ const Clients = () => {
   }
 
   const getClients = async () => {
-    const res = await fetch("https://localhost:7030/api/clients");
-    if (res.ok) {
-      const data = await res.json();
-      setClients(data);
-    }
+    const res = await fetch("https://localhost:7030/api/clients", {
+      method: "GET",
+      headers: {
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      },
+    });
+    const data = await res.json();
+    setClients(data);
   };
 
   const handleEditClient = (client) => {
@@ -105,6 +108,7 @@ const Clients = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
       body: JSON.stringify(clientToUpdate),
     });
@@ -164,6 +168,7 @@ const Clients = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
       body: JSON.stringify(clientToAdd),
     });

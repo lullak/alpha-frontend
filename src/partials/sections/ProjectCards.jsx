@@ -18,6 +18,7 @@ const ProjectCards = ({ project, onEdit, onDelete }) => {
       `https://localhost:7030/api/projects/${project.id}`,
       {
         method: "DELETE",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       }
     );
 

@@ -25,11 +25,14 @@ const Members = () => {
   }
 
   const getUsers = async () => {
-    const res = await fetch("https://localhost:7030/api/users");
-    if (res.ok) {
-      const data = await res.json();
-      setUsers(data);
-    }
+    const res = await fetch("https://localhost:7030/api/users", {
+      method: "GET",
+      headers: {
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      },
+    });
+    const data = await res.json();
+    setUsers(data);
   };
 
   const handleEditUser = (user) => {
@@ -72,6 +75,7 @@ const Members = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
       body: JSON.stringify(userToUpdate),
     });
@@ -118,6 +122,7 @@ const Members = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
       body: JSON.stringify(userToAdd),
     });
