@@ -16,7 +16,10 @@ const ClientTables = ({ client, onEdit, onDelete }) => {
   const handleDelete = async () => {
     const res = await fetch(`https://localhost:7030/api/clients/${client.id}`, {
       method: "DELETE",
-      "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      },
     });
 
     if (res.ok) {

@@ -185,6 +185,7 @@ const Projects = () => {
       budget: newProject.budget !== null ? Number(newProject.budget) : null,
       clientId: newProject.clientId,
       userId: newProject.userId,
+      created: new Date().toISOString(),
     };
 
     const res = await fetch("https://localhost:7030/api/projects", {
