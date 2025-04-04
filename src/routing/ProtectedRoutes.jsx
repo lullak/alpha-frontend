@@ -4,23 +4,19 @@ import { useAuth } from "../contexts/AuthContext";
 import LoadingSpinner from "../partials/components/LoadingSpinner";
 
 export const ProtectedRoute = ({ children }) => {
-  const { auth } = useAuth();
+  const { loading, token } = useAuth();
 
-  if (auth.loading) return <LoadingSpinner />;
-  return auth.isAuthenticated ? (
-    children
-  ) : (
-    <Navigate to="/auth/signin" replace />
-  );
+  if (loading) return <LoadingSpinner />;
+  return token ? children : <Navigate to="/auth/signin" replace />;
 };
 
 export const AdminRoute = ({ children }) => {
-  const { auth } = useAuth();
+  const { loading, token, user } = useAuth();
 
-  if (auth.loading) return <LoadingSpinner />;
-  return auth.isAuthenticated && auth.role === "admin" ? (
+  if (loading) return <LoadingSpinner />;
+  return token && user.role?.includes("Admin") ? (
     children
   ) : (
-    <Navigate to="/admin/projects" replace />
+    <Navigate to="/auth/signin" replace />
   );
 };

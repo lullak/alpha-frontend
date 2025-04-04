@@ -110,10 +110,11 @@
     --form-error-message-border-color: var(--red-light);
 
     --card-project-color: var(--gray-200)
+    --card-user-color: var(--gray-600)
 }
 /* Generead med hjälp av ai för att slippa mappa ut alla färger självmant */
 
-[data-theme="light"] {
+[data-theme="dark"] {
     --background-color: var(--dark-100);
     --content-background-color: var(--dark-200);
     --sidebar-background-color: var(--dark-300);
@@ -168,6 +169,7 @@
     --form-error-message-border-color: var(--red-dark);
 
     --card-project-color: var(--dark-200);
+    --card-user-color: var(--dark-200)
 }
 
 /* structure */
@@ -194,7 +196,7 @@ html, body {
     grid-template-columns: auto 1fr;
     grid-template-rows: minmax(80px, auto) 1fr;
     grid-template-areas: "sidebar top" "sidebar main";
-    height: 100dvh;
+    
 
     > header,
     > .header {
@@ -689,13 +691,6 @@ section > .content {
         margin-top: 2rem; 
     }
 
-@media (width >= 768px) {
-    #signup,
-    #signin {
-        width: 30%;
-    }
-}
-
 
 /* En del av css för är generad med hjälp av ai för att få en snabb grund på mall som sen har reviderats rejält */
 /* projects */
@@ -704,6 +699,8 @@ section > .content {
     grid-template-columns: repeat(1, 1fr); 
     gap: 20px;
     padding: 20px;
+    place-items: start center;
+    position: relative;
   }
   @media (min-width: 1080px) {
     .containerproject {
@@ -717,6 +714,24 @@ section > .content {
     }
   }
 
+  .containeruser {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); 
+    gap: 20px;
+    padding: 20px;
+  }
+  @media (min-width: 1080px) {
+    .containeruser {
+      grid-template-columns: repeat(2, 1fr); 
+    }
+  }
+  
+  @media (min-width: 1450px) {
+    .containeruser {
+      grid-template-columns: repeat(3, 1fr); 
+    }
+  }
+
   .container-client {
     display: grid;
     grid-template-columns: repeat(1, 1fr); 
@@ -724,6 +739,51 @@ section > .content {
     padding: 20px;
   }
  
+  .carduser {
+    position: relative;
+    background-color: var(--card-project-color);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .titleuser {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+ 
+    top: 20px;
+    left: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+  
+  .clientuser {
+    margin: 0 0 10px 0;
+    color: var(--gray-800);
+    font-size: 12px;
+   
+    top: 45px;
+    left: 80px;
+  }
+  
+  .descuser {
+    margin: 0;
+    font-size: 13px;
+    
+    top: 80px;
+    left: 15px;
+  }
+
+
   
   .cardproject {
     position: relative;
@@ -978,6 +1038,59 @@ section > .content {
     object-fit: cover;
   }
 
+  .user-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .user-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .user-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0;
+  }
+  
+  .user-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    background-color: var(--table-header-background-color);
+    color: var(--table-header-text-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+  .user-email,
+  .user-phone {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0;
+  }
+  
+  .user-role {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    margin-top: 15px;
+  }
+
   /* Image Picker */
 .image-picker-container {
     width: 75px;
@@ -1157,4 +1270,122 @@ section > .content {
 .error {
   color: red;
   font-size: 0.6rem;
+}
+
+/* haader img*/
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--header-bg);
+}
+
+.user-menu-header {
+  position: relative;
+}
+
+.user-image-header {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute; 
+  top: -20px; 
+  right: 0px; 
+}
+
+.dropdown-header {
+  position: absolute;
+  top: 40px;
+  right: -30px;
+  background-color: var(--modal-background-color);
+  border: 1px solid var(--dropdown-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  z-index: 10;
+  padding: 10px;
+}
+
+.user-info-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dropdown-user-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.slider {
+  width: 40px;
+  height: 20px;
+  background-color: var(--slider-bg);
+  border-radius: 10px;
+  margin-right: 10px;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--slider-thumb);
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+
+.toggle-text {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--logout-bg);
+  color: var(--logout-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-button i {
+  margin-right: 5px;
+}
+
+.logout-button:hover {
+  background-color: var(--logout-hover-bg);
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ModalButton from "../partials/components/ModalButton";
 import UserCards from "../partials/sections/UserCards";
 import Modal from "../partials/sections/Modal";
-import fallbackImage from "../assets/images/ProjectIcons/Icon_Red.svg";
+import fallbackImage from "../assets/images/Avatars/Avatar_4.svg";
 
 const Members = () => {
   const [users, setUsers] = useState([]);
@@ -10,19 +10,57 @@ const Members = () => {
   const [editUserId, setEditUserId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newUser, setNewUser] = useState(initialUserState());
+  const [validationErrors, setValidationErrors] = useState({});
 
   function initialUserState() {
     return {
+      id: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
       image: "",
-      projectName: "",
-      clientId: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      budget: null,
-      userId: "",
+      streetName: "",
+      postalCode: "",
+      city: "",
+      role: "",
+      jobTitle: "",
     };
   }
+
+  const validateUser = (user) => {
+    const errors = {};
+
+    if (!user.firstName.trim()) {
+      errors.firstName = "First Name cannot be empty.";
+    }
+
+    if (!user.lastName.trim()) {
+      errors.lastName = "Last Name cannot be empty.";
+    }
+
+    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!user.email.trim()) {
+      errors.email = "Email cannot be empty.";
+    } else if (!emailRegex.test(user.email)) {
+      errors.email = "Invalid email format.";
+    }
+
+    const phoneRegex = /^\d{10,}$/;
+    if (user.phoneNumber && !phoneRegex.test(user.phoneNumber)) {
+      errors.phoneNumber = "Phone number must be at least 10 digits.";
+    }
+
+    const postalCodeRegex = /^\d{5}$/;
+    if (user.postalCode && !postalCodeRegex.test(user.postalCode)) {
+      errors.postalCode = "Postal Code must be exactly 5 digits.";
+    }
+    if (!user.role.trim()) {
+      errors.role = "Role must be selected.";
+    }
+
+    return errors;
+  };
 
   const getUsers = async () => {
     const res = await fetch("https://localhost:7030/api/users", {
@@ -39,14 +77,17 @@ const Members = () => {
     setIsEditMode(true);
     setEditUserId(user.id);
     setNewUser({
+      userImage: user.userImage || "",
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
+      email: user.email,
+      phoneNumber: user.phoneNumber || "",
       image: user.image || "",
-      userName: user.projectName,
-      clientId: user.client?.id || "",
-      description: user.description || "",
-      startDate: user.startDate.split("T")[0],
-      endDate: user.endDate ? user.endDate.split("T")[0] : "",
-      budget: user.budget || null,
-      userId: user.user?.id || "",
+      streetName: user.streetName,
+      postalCode: user.postalCode || "",
+      city: user.city || "",
+      role: user.role || "",
+      jobTitle: user.jobTitle || "",
     });
     setIsModalOpen(true);
   };
@@ -54,22 +95,25 @@ const Members = () => {
   const handleUpdateUser = async (e) => {
     e.preventDefault();
 
-    if (
-      !newUser.projectName ||
-      !newUser.startDate ||
-      !newUser.clientId ||
-      !newUser.userId
-    ) {
+    const errors = validateUser(newUser);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
+    setValidationErrors({});
 
     const userToUpdate = {
-      ...newUser,
       id: editUserId,
-      startDate: new Date(newUser.startDate).toISOString(),
-      endDate: newUser.endDate ? new Date(newUser.endDate).toISOString() : null,
-      budget: newUser.budget !== null ? Number(newUser.budget) : null,
-      statusId: newUser.statusId || 1,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      phoneNumber: newUser.phoneNumber || null,
+      image: newUser.image || null,
+      streetName: newUser.streetName || null,
+      postalCode: newUser.postalCode || null,
+      city: newUser.city || null,
+      role: newUser.role,
+      jobTitle: newUser.jobTitle || null,
     };
     const res = await fetch(`https://localhost:7030/api/users`, {
       method: "PUT",
@@ -99,25 +143,28 @@ const Members = () => {
   const handleAddUser = async (e) => {
     e.preventDefault();
 
-    if (
-      !newUser.userName ||
-      !newUser.startDate ||
-      !newUser.clientId ||
-      !newUser.userId
-    ) {
+    const errors = validateUser(newUser);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
+    setValidationErrors({});
 
     const userToAdd = {
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      phoneNumber: newUser.phoneNumber || null,
       image: newUser.image || fallbackImage,
-      userName: newUser.userName,
-      description: newUser.description || "",
-      startDate: new Date(newUser.startDate).toISOString(),
-      endDate: newUser.endDate ? new Date(newUser.endDate).toISOString() : null,
-      budget: newUser.budget !== null ? Number(newUser.budget) : null,
-      clientId: newUser.clientId,
-      userId: newUser.userId,
+      streetName: newUser.streetName || null,
+      postalCode: newUser.postalCode || null,
+      city: newUser.city || null,
+      role: newUser.role || "User",
+      jobTitle: newUser.jobTitle || null,
     };
+
+    console.log("Payload being sent:", userToAdd);
+
     const res = await fetch("https://localhost:7030/api/users", {
       method: "POST",
       headers: {
@@ -130,16 +177,17 @@ const Members = () => {
     if (res.ok) {
       await getUsers();
     }
+
     setNewUser(initialUserState());
     setIsModalOpen(false);
   };
   return (
-    <div id="projects">
+    <div id="members">
       <div className="page-header">
-        <h1 className="h2">Projects</h1>
+        <h1 className="h2">Team Members</h1>
         <ModalButton
           type="add"
-          text="Add Project"
+          text="Add Member"
           onClick={() => {
             setIsEditMode(false);
             setNewUser(initialUserState());
@@ -148,11 +196,11 @@ const Members = () => {
         />
       </div>
 
-      <div className="containerproject">
-        {users.map((u) => (
+      <div className="containeruser">
+        {users.map((user) => (
           <UserCards
-            key={u.id}
-            client={u}
+            key={user.id}
+            user={user}
             onEdit={handleEditUser}
             onDelete={handleDeleteUser}
           />
@@ -166,9 +214,13 @@ const Members = () => {
         onClose={() => {
           setNewUser(initialUserState());
           setIsModalOpen(false);
+          setValidationErrors({});
         }}
       >
-        <form onSubmit={isEditMode ? handleUpdateUser : handleAddUser}>
+        <form
+          noValidate
+          onSubmit={isEditMode ? handleUpdateUser : handleAddUser}
+        >
           <div className="form-group image-picker">
             <div
               className="image-picker-container"
@@ -206,118 +258,143 @@ const Members = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="userName">User Name</label>
-            <input
-              type="text"
-              id="userName"
-              placeholder="Enter User Name"
-              value={newUser.userName}
-              onChange={(e) =>
-                setNewUser({ ...newUser, userName: e.target.value })
-              }
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="clientId">Client Name</label>
-            <div className="select-wrapper">
-              <select
-                id="clientId"
-                value={newUser.clientId}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, clientId: e.target.value })
-                }
-                required
-              >
-                <option value="">Select Client Name</option>
-                {users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.clientName}
-                  </option>
-                ))}
-              </select>
+            <div className="date-group">
+              <div>
+                <label htmlFor="firstName">First Name</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  placeholder="Enter First Name"
+                  value={newUser.firstName}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, firstName: e.target.value })
+                  }
+                  required
+                />
+                <p className="error">{validationErrors.firstName}</p>
+              </div>
+              <div>
+                <label htmlFor="lastName">Last Name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  placeholder="Enter Last Name"
+                  value={newUser.lastName}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, lastName: e.target.value })
+                  }
+                  required
+                />
+                <p className="error">{validationErrors.lastName}</p>
+              </div>
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              placeholder="Type something"
-              value={newUser.description}
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              id="email"
+              placeholder="Enter email address"
+              value={newUser.email}
               onChange={(e) =>
-                setNewUser({ ...newUser, description: e.target.value })
+                setNewUser({ ...newUser, email: e.target.value })
               }
-            ></textarea>
+              required
+            />
+            <p className="error">{validationErrors.email}</p>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="phone">Phone</label>
+            <input
+              type="text"
+              id="phone"
+              placeholder="Enter phone number"
+              value={newUser.phoneNumber || ""}
+              onChange={(e) =>
+                setNewUser({ ...newUser, phoneNumber: e.target.value })
+              }
+            />{" "}
+            <p className="error">{validationErrors.phoneNumber}</p>
+          </div>
+          <div className="form-group">
+            <label htmlFor="jobTitle">Job Title</label>
+            <input
+              type="text"
+              id="jobTitle"
+              placeholder="Enter job title"
+              value={newUser.jobTitle || ""}
+              onChange={(e) =>
+                setNewUser({ ...newUser, jobTitle: e.target.value })
+              }
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="role">Member Role</label>
+            <div className="select-wrapper">
+              <select
+                id="role"
+                value={newUser.role}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, role: e.target.value })
+                }
+                required
+              >
+                <option value="">Select Member Role</option>
+                {[...new Set(users.map((user) => user.role))].map(
+                  (role, index) => (
+                    <option key={index} value={role}>
+                      {role}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
+            <p className="error">{validationErrors.role}</p>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="streetName">Address</label>
+            <input
+              type="text"
+              id="streetName"
+              placeholder="Enter street address"
+              value={newUser.streetName || ""}
+              onChange={(e) =>
+                setNewUser({ ...newUser, streetName: e.target.value })
+              }
+            />
           </div>
 
           <div className="form-group">
             <div className="date-group">
               <div>
-                <label htmlFor="startDate">Start Date</label>
+                <label htmlFor="postalCode">Postal Code</label>
                 <input
-                  type="date"
-                  id="startDate"
-                  value={newUser.startDate}
+                  type="text"
+                  id="postalCode"
+                  placeholder="Enter postal code"
+                  value={newUser.postalCode || ""}
                   onChange={(e) =>
-                    setNewUser({ ...newUser, startDate: e.target.value })
+                    setNewUser({ ...newUser, postalCode: e.target.value })
                   }
-                  required
                 />
+                <p className="error">{validationErrors.postalCode}</p>
               </div>
               <div>
-                <label htmlFor="endDate">End Date</label>
+                <label htmlFor="city">City</label>
                 <input
-                  type="date"
-                  id="endDate"
-                  value={newUser.endDate}
+                  type="text"
+                  id="city"
+                  placeholder="Enter city"
+                  value={newUser.city || ""}
                   onChange={(e) =>
-                    setNewUser({ ...newUser, endDate: e.target.value })
+                    setNewUser({ ...newUser, city: e.target.value })
                   }
                 />
               </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="userId">User Owner</label>
-            <div className="select-wrapper">
-              <select
-                id="userId"
-                value={newUser.userId}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, userId: e.target.value })
-                }
-                required
-              >
-                <option value="">Select User Owner</option>
-                {users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.firstName} {user.lastName}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="budget">Budget</label>
-            <div className="input-group">
-              <span className="input-group-text">$</span>
-              <input
-                type="number"
-                id="budget"
-                placeholder="0"
-                value={newUser.budget === null ? "" : newUser.budget}
-                onChange={(e) =>
-                  setNewUser({
-                    ...newUser,
-                    budget:
-                      e.target.value === "" ? null : Number(e.target.value),
-                  })
-                }
-              />
             </div>
           </div>
 

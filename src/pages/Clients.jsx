@@ -104,7 +104,7 @@ const Clients = () => {
       clientInformationId: newClient.clientInformationId,
     };
 
-    const res = await fetch(`https://localhost:7030/api/Clients`, {
+    const res = await fetch("https://localhost:7030/api/Clients", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

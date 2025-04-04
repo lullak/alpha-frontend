@@ -3,17 +3,18 @@ import NavLinkItem from "../components/NavLinkItem";
 import { useAuth } from "../../contexts/AuthContext";
 
 const NavLinks = () => {
-  const { auth } = useAuth();
+  const { user } = useAuth();
+  console.log("Auth object in NavLinks:", user);
 
   return (
     <nav className="nav-links">
       <NavLinkItem
-        to="/admin/projects"
+        to="/projects"
         text="Projects"
         iconClass="fa-duotone fa-solid fa-briefcase"
       />
 
-      {auth.role === "admin" && (
+      {user.role?.includes("Admin") && (
         <>
           <NavLinkItem
             to="/admin/members"

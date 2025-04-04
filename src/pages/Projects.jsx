@@ -82,6 +82,8 @@ const Projects = () => {
       endDate: project.endDate ? project.endDate.split("T")[0] : "",
       budget: project.budget || null,
       userId: project.user?.id || "",
+      created: project.created,
+      statusId: project.status?.id || 1,
     });
     setIsModalOpen(true);
   };
@@ -119,8 +121,9 @@ const Projects = () => {
         : null,
       budget: newProject.budget !== null ? Number(newProject.budget) : null,
       statusId: newProject.statusId || 1,
+      created: newProject.created,
     };
-    const res = await fetch(`https://localhost:7030/api/Projects`, {
+    const res = await fetch("https://localhost:7030/api/Projects", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

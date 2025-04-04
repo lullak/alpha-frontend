@@ -30,11 +30,11 @@ const UserCards = ({ user, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="cardproject">
-      <div className="project-image">
-        <img src={fallbackImage} width="56" height="56" />
+    <div className="carduser">
+      <div className="user-image">
+        <img src={user.image || fallbackImage} width="56" height="56" />
       </div>
-      <h3 className="titleproject">test</h3>
+      <h3 className="user-name">{`${user.firstName} ${user.lastName}`}</h3>
       <button type="button" className="ellipsis" onClick={toggleMenu}>
         <i className="fa-solid fa-ellipsis"></i>
       </button>
@@ -54,8 +54,10 @@ const UserCards = ({ user, onEdit, onDelete }) => {
           </button>
         </div>
       )}
-      <p className="clientproject">test</p>
-      <p className="descproject">test</p>
+      <p className="user-title">{user.jobTitle}</p>
+      <p className="user-email">{user.email}</p>
+      <p className="user-phone">{user.phoneNumber || ""}</p>
+      <p className="user-role">{user.role}</p>
     </div>
   );
 };

@@ -26,7 +26,7 @@ const routesConfig = [
       </ProtectedRoute>
     ),
     children: [
-      { path: "/admin/projects", element: <Projects /> },
+      { path: "/projects", element: <Projects /> },
       {
         path: "/admin/members",
         element: (
@@ -43,7 +43,7 @@ const routesConfig = [
           </AdminRoute>
         ),
       },
-      { path: "*", element: <Navigate to="/admin/projects" replace /> },
+      { path: "*", element: <Navigate to="/projects" replace /> },
     ],
   },
 ];
