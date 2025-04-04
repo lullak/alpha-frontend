@@ -182,6 +182,7 @@ html, body {
     font-style: normal;
     color: var(--text-color);
     background-color: var(--background-color);
+    height: 400dvh;
 }
 
 .wrapper-centerscreen {
@@ -196,6 +197,7 @@ html, body {
     grid-template-columns: auto 1fr;
     grid-template-rows: minmax(80px, auto) 1fr;
     grid-template-areas: "sidebar top" "sidebar main";
+    height: 100dvh;
     
 
     > header,
