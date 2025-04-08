@@ -77,7 +77,6 @@ const Members = () => {
     setIsEditMode(true);
     setEditUserId(user.id);
     setNewUser({
-      userImage: user.userImage || "",
       firstName: user.firstName || "",
       lastName: user.lastName || "",
       email: user.email,
