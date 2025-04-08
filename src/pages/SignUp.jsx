@@ -17,6 +17,7 @@ const SignUp = () => {
     image: { fallbackImage },
   });
   const [error, setError] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +54,11 @@ const SignUp = () => {
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    if (!acceptTerms) {
+      setError("You must accept the Terms and Conditions.");
       return;
     }
 
@@ -129,6 +135,17 @@ const SignUp = () => {
                 onChange={handleChange}
                 required
               />
+            </div>
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  style={{ width: "10px", height: "10px" }}
+                />{" "}
+                I accept <a href="#">Terms and Conditions</a>
+              </label>
             </div>
 
             {error && <p className="error">{error}</p>}

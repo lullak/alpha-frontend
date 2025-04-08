@@ -37,8 +37,10 @@ const Projects = () => {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
     });
-    const data = await res.json();
-    setProjects(data);
+    if (res.ok) {
+      const data = await res.json();
+      setProjects(data);
+    }
   };
 
   const getClients = async () => {
@@ -48,8 +50,10 @@ const Projects = () => {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
     });
-    const data = await res.json();
-    setClients(data);
+    if (res.ok) {
+      const data = await res.json();
+      setClients(data);
+    }
   };
 
   const getUsers = async () => {
@@ -59,8 +63,10 @@ const Projects = () => {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
     });
-    const data = await res.json();
-    setUsers(data);
+    if (res.ok) {
+      const data = await res.json();
+      setUsers(data);
+    }
   };
 
   const filteredProjects = projects.filter((project) => {
