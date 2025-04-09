@@ -6,7 +6,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const storeToken = localStorage.getItem("authToken");
@@ -20,56 +19,41 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const signUp = async (formData) => {
-    try {
-      const res = await fetch("https://localhost:7030/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": import.meta.env.VITE_X_API_KEY,
-        },
-        body: JSON.stringify(formData),
-      });
+    const res = await fetch("https://localhost:7030/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      },
+      body: JSON.stringify(formData),
+    });
 
-      if (!res.ok) {
-        const data = await res.json();
-        setErrorMessage(data.error || "Sign up failed");
-        return false;
-      }
-
-      return true;
-    } catch {
-      setErrorMessage("Try again.");
+    if (!res.ok) {
       return false;
     }
+    return true;
   };
 
   const signIn = async (email, password, isPersistent = false) => {
-    try {
-      const res = await fetch("https://localhost:7030/api/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": import.meta.env.VITE_X_API_KEY,
-        },
-        body: JSON.stringify({ email, password, isPersistent }),
-      });
+    const res = await fetch("https://localhost:7030/api/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+      },
+      body: JSON.stringify({ email, password, isPersistent }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!res.ok) {
-        setErrorMessage(data.error);
-        return false;
-      }
-
-      setToken(data.token);
-      setUser(data.user);
-      localStorage.setItem("authToken", data.token);
-      localStorage.setItem("authUser", JSON.stringify(data.user));
-      return true;
-    } catch {
-      setErrorMessage("Invalid email or password");
+    if (!res.ok) {
       return false;
     }
+    setToken(data.token);
+    setUser(data.user);
+    localStorage.setItem("authToken", data.token);
+    localStorage.setItem("authUser", JSON.stringify(data.user));
+    return true;
   };
 
   const signOut = () => {
@@ -79,18 +63,9 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("authUser");
   };
 
-  const authFetch = async (url, options = {}) => {
-    const headers = options.headers ? { ...options.headers } : {};
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
-    headers["X-API-KEY"] = import.meta.env.VITE_X_API_KEY;
-    return fetch(url, { ...options, headers });
-  };
-
   return (
     <AuthContext.Provider
-      value={{ loading, token, user, signUp, signIn, signOut, authFetch }}
+      value={{ loading, token, user, signUp, signIn, signOut }}
     >
       {children}
     </AuthContext.Provider>
