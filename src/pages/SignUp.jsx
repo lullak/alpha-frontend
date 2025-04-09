@@ -74,7 +74,7 @@ const SignUp = () => {
     <>
       <div id="signup" className="card">
         <div className="card-header">
-          <h1>Sign Up</h1>
+          <h1>Create Account</h1>
         </div>
         <div className="card-body">
           <form noValidate onSubmit={handleSubmit}>
@@ -151,7 +151,7 @@ const SignUp = () => {
             {error && <p className="error">{error}</p>}
 
             <button className="btn btn-sign" type="submit">
-              Sign Up
+              Create Account
             </button>
           </form>
           <p>
