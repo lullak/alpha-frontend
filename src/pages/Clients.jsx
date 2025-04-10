@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ModalButton from "../partials/components/ModalButton";
 import ClientTables from "../partials/sections/ClientTable";
 import Modal from "../partials/sections/Modal";
-import fallbackImage from "/src/assets/images/Avatars/Avatar_4.svg";
 
 const Clients = () => {
   const [clients, setClients] = useState([]);
@@ -17,12 +16,14 @@ const Clients = () => {
       clientId: "",
       clientName: "",
       clientImage: "",
+      clientImageFile: null,
       clientEmail: "",
       clientPhone: "",
       clientBillingAddress: "",
       clientBillingPostalCode: "",
       clientBillingCity: "",
       clientBillingReference: "",
+      clientInformationId: "",
     };
   }
 
@@ -41,7 +42,8 @@ const Clients = () => {
     setIsEditMode(true);
     setEditClientId(client.id);
     setNewClient({
-      clientImage: client.clientImage || fallbackImage,
+      clientImage: client.clientImage,
+      clientImageFile: null,
       clientName: client.clientName,
       clientEmail: client.clientEmail,
       clientPhone: client.clientPhone,
@@ -90,27 +92,40 @@ const Clients = () => {
     }
     setValidationErrors({});
 
-    const clientToUpdate = {
-      id: editClientId,
-      clientId: editClientId,
-      clientName: newClient.clientName,
-      clientImage: newClient.clientImage || fallbackImage,
-      clientEmail: newClient.clientEmail,
-      clientPhone: newClient.clientPhone,
-      clientBillingCity: newClient.clientBillingCity,
-      clientBillingAddress: newClient.clientBillingAddress || "",
-      clientBillingPostalCode: newClient.clientBillingPostalCode || "",
-      clientBillingReference: newClient.clientBillingReference || "",
-      clientInformationId: newClient.clientInformationId,
-    };
+    const formData = new FormData();
+    formData.append("Id", editClientId);
+    formData.append("ClientId", editClientId);
+    formData.append("ClientName", newClient.clientName);
+    formData.append("ClientEmail", newClient.clientEmail);
+    formData.append("ClientPhone", newClient.clientPhone);
+    formData.append("ClientBillingCity", newClient.clientBillingCity);
+    formData.append("ClientInformationId", newClient.clientInformationId || "");
+
+    formData.append(
+      "ClientBillingAddress",
+      newClient.clientBillingAddress || ""
+    );
+    formData.append(
+      "ClientBillingPostalCode",
+      newClient.clientBillingPostalCode || ""
+    );
+    formData.append(
+      "ClientBillingReference",
+      newClient.clientBillingReference || ""
+    );
+
+    if (newClient.clientImageFile) {
+      formData.append("NewImageFile", newClient.clientImageFile);
+    } else if (newClient.clientImage && newClient.clientImage) {
+      formData.append("ClientImage", newClient.clientImage);
+    }
 
     const res = await fetch("https://localhost:7030/api/Clients", {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
-      body: JSON.stringify(clientToUpdate),
+      body: formData,
     });
 
     if (res.ok) {
@@ -153,24 +168,36 @@ const Clients = () => {
     }
     setValidationErrors({});
 
-    const clientToAdd = {
-      clientImage: newClient.clientImage || fallbackImage,
-      clientName: newClient.clientName,
-      clientEmail: newClient.clientEmail,
-      clientPhone: newClient.clientPhone,
-      clientBillingCity: newClient.clientBillingCity,
-      clientBillingAddress: newClient.clientBillingAddress || "",
-      clientBillingPostalCode: newClient.clientBillingPostalCode || "",
-      clientBillingReference: newClient.clientBillingReference || "",
-    };
+    const formData = new FormData();
+
+    formData.append("ClientName", newClient.clientName);
+    formData.append("ClientEmail", newClient.clientEmail);
+    formData.append("ClientPhone", newClient.clientPhone);
+    formData.append("ClientBillingCity", newClient.clientBillingCity);
+
+    formData.append(
+      "ClientBillingAddress",
+      newClient.clientBillingAddress || ""
+    );
+    formData.append(
+      "ClientBillingPostalCode",
+      newClient.clientBillingPostalCode || ""
+    );
+    formData.append(
+      "ClientBillingReference",
+      newClient.clientBillingReference || ""
+    );
+
+    if (newClient.clientImageFile) {
+      formData.append("ClientImage", newClient.clientImageFile);
+    }
 
     const res = await fetch("https://localhost:7030/api/clients", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
-      body: JSON.stringify(clientToAdd),
+      body: formData,
     });
 
     if (res.ok) {
@@ -238,6 +265,7 @@ const Clients = () => {
         >
           <form
             noValidate
+            encType="multipart/form-data"
             onSubmit={isEditMode ? handleUpdateClient : handleAddClient}
           >
             <div className="form-group image-picker">
@@ -268,6 +296,7 @@ const Clients = () => {
                       setNewClient({
                         ...newClient,
                         clientImage: event.target.result,
+                        clientImageFile: file,
                       });
                     };
                     reader.readAsDataURL(file);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import fallbackImage from "/src/assets/images/Avatars/Avatar_4.svg";
 
 const Header = () => {
   const { signOut } = useAuth();
@@ -67,7 +68,7 @@ const Header = () => {
     <header className="header">
       <div className="user-menu-header">
         <img
-          src={user.image}
+          src={user.image || fallbackImage}
           alt="User"
           className="user-image-header"
           onClick={toggleDropdown}
@@ -76,7 +77,7 @@ const Header = () => {
           <div className="dropdown-header">
             <div className="user-info-header">
               <img
-                src={user.image}
+                src={user.image || fallbackImage}
                 alt="User"
                 className="dropdown-user-image"
               />{" "}

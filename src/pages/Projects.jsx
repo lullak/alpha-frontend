@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ModalButton from "../partials/components/ModalButton";
 import ProjectCards from "../partials/sections/ProjectCards";
 import Modal from "../partials/sections/Modal";
-import fallbackImage from "../assets/images/ProjectIcons/Icon_Red.svg";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -18,6 +17,7 @@ const Projects = () => {
   function initialProjectState() {
     return {
       image: "",
+      imageFile: null,
       projectName: "",
       clientId: "",
       description: "",
@@ -118,24 +118,32 @@ const Projects = () => {
     }
     setValidationErrors({});
 
-    const projectToUpdate = {
-      ...newProject,
-      id: editProjectId,
-      startDate: new Date(newProject.startDate).toISOString(),
-      endDate: newProject.endDate
-        ? new Date(newProject.endDate).toISOString()
-        : null,
-      budget: newProject.budget !== null ? Number(newProject.budget) : null,
-      statusId: newProject.statusId || 1,
-      created: newProject.created,
-    };
+    const formData = new FormData();
+    formData.append("Id", editProjectId);
+    if (newProject.imageFile) {
+      formData.append("NewImageFile", newProject.imageFile);
+    } else if (newProject.image) {
+      formData.append("Image", newProject.image);
+    }
+    formData.append("ProjectName", newProject.projectName);
+    formData.append("Description", newProject.description || "");
+    formData.append("StartDate", newProject.startDate);
+    formData.append("EndDate", newProject.endDate || "");
+    formData.append(
+      "Budget",
+      newProject.budget !== null ? newProject.budget : ""
+    );
+    formData.append("ClientId", newProject.clientId);
+    formData.append("UserId", newProject.userId);
+    formData.append("StatusId", newProject.statusId || 1);
+    formData.append("Created", newProject.created || "");
+
     const res = await fetch("https://localhost:7030/api/Projects", {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
-      body: JSON.stringify(projectToUpdate),
+      body: formData,
     });
     if (res.ok) {
       await getProjects();
@@ -183,27 +191,26 @@ const Projects = () => {
     }
     setValidationErrors({});
 
-    const projectToAdd = {
-      image: newProject.image || fallbackImage,
-      projectName: newProject.projectName,
-      description: newProject.description || "",
-      startDate: new Date(newProject.startDate).toISOString(),
-      endDate: newProject.endDate
-        ? new Date(newProject.endDate).toISOString()
-        : null,
-      budget: newProject.budget !== null ? Number(newProject.budget) : null,
-      clientId: newProject.clientId,
-      userId: newProject.userId,
-      created: new Date().toISOString(),
-    };
+    const formData = new FormData();
+    formData.append("Image", newProject.imageFile);
+    formData.append("ProjectName", newProject.projectName);
+    formData.append("Description", newProject.description || "");
+    formData.append("StartDate", newProject.startDate);
+    formData.append("EndDate", newProject.endDate || "");
+    formData.append(
+      "Budget",
+      newProject.budget !== null ? newProject.budget : ""
+    );
+    formData.append("ClientId", newProject.clientId);
+    formData.append("UserId", newProject.userId);
+    formData.append("Created", newProject.created || new Date().toISOString());
 
     const res = await fetch("https://localhost:7030/api/projects", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
-      body: JSON.stringify(projectToAdd),
+      body: formData,
     });
 
     if (res.ok) {
@@ -279,6 +286,7 @@ const Projects = () => {
         <form
           noValidate
           onSubmit={isEditMode ? handleUpdateProject : handleAddProject}
+          encType="multipart/form-data"
         >
           <div className="form-group image-picker">
             <div
@@ -308,6 +316,7 @@ const Projects = () => {
                     setNewProject({
                       ...newProject,
                       image: event.target.result,
+                      imageFile: file,
                     });
                   };
                   reader.readAsDataURL(file);

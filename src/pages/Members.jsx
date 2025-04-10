@@ -20,6 +20,7 @@ const Members = () => {
       email: "",
       phoneNumber: "",
       image: "",
+      imageFile: null,
       streetName: "",
       postalCode: "",
       city: "",
@@ -101,26 +102,30 @@ const Members = () => {
     }
     setValidationErrors({});
 
-    const userToUpdate = {
-      id: editUserId,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      email: newUser.email,
-      phoneNumber: newUser.phoneNumber || null,
-      image: newUser.image || null,
-      streetName: newUser.streetName || null,
-      postalCode: newUser.postalCode || null,
-      city: newUser.city || null,
-      role: newUser.role,
-      jobTitle: newUser.jobTitle || null,
-    };
+    const formData = new FormData();
+
+    formData.append("Id", editUserId);
+    formData.append("FirstName", newUser.firstName);
+    formData.append("LastName", newUser.lastName);
+    formData.append("Email", newUser.email);
+    formData.append("Role", newUser.role);
+    if (newUser.phoneNumber)
+      formData.append("PhoneNumber", newUser.phoneNumber);
+    if (newUser.jobTitle) formData.append("JobTitle", newUser.jobTitle);
+    if (newUser.streetName) formData.append("StreetName", newUser.streetName);
+    if (newUser.postalCode) formData.append("PostalCode", newUser.postalCode);
+    if (newUser.city) formData.append("City", newUser.city);
+    if (newUser.imageFile) {
+      formData.append("NewImageFile", newUser.imageFile);
+    } else if (newUser.image && newUser.image !== fallbackImage) {
+      formData.append("Image", newUser.image);
+    }
     const res = await fetch(`https://localhost:7030/api/users`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
-      body: JSON.stringify(userToUpdate),
+      body: formData,
     });
     if (res.ok) {
       await getUsers();
@@ -149,28 +154,28 @@ const Members = () => {
     }
     setValidationErrors({});
 
-    const userToAdd = {
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      email: newUser.email,
-      phoneNumber: newUser.phoneNumber || null,
-      image: newUser.image || fallbackImage,
-      streetName: newUser.streetName || null,
-      postalCode: newUser.postalCode || null,
-      city: newUser.city || null,
-      role: newUser.role || "User",
-      jobTitle: newUser.jobTitle || null,
-    };
+    const formData = new FormData();
 
-    console.log("Payload being sent:", userToAdd);
+    formData.append("FirstName", newUser.firstName);
+    formData.append("LastName", newUser.lastName);
+    formData.append("Email", newUser.email);
+    formData.append("Role", newUser.role || "User");
+    if (newUser.phoneNumber)
+      formData.append("PhoneNumber", newUser.phoneNumber);
+    if (newUser.jobTitle) formData.append("JobTitle", newUser.jobTitle);
+    if (newUser.streetName) formData.append("StreetName", newUser.streetName);
+    if (newUser.postalCode) formData.append("PostalCode", newUser.postalCode);
+    if (newUser.city) formData.append("City", newUser.city);
+    if (newUser.imageFile) {
+      formData.append("Image", newUser.imageFile);
+    }
 
     const res = await fetch("https://localhost:7030/api/users", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
       },
-      body: JSON.stringify(userToAdd),
+      body: formData,
     });
 
     if (res.ok) {
@@ -218,6 +223,7 @@ const Members = () => {
       >
         <form
           noValidate
+          encType="multipart/form-data"
           onSubmit={isEditMode ? handleUpdateUser : handleAddUser}
         >
           <div className="form-group image-picker">
@@ -248,6 +254,7 @@ const Members = () => {
                     setNewUser({
                       ...newUser,
                       image: event.target.result,
+                      imageFile: file,
                     });
                   };
                   reader.readAsDataURL(file);
