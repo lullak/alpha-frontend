@@ -12,5 +12,3 @@ Integration with a backend API for data management.
 Frontend: React.js
 Styling: CSS/SCSS
 API Communication: Fetch API
-
-Testar redeploy
