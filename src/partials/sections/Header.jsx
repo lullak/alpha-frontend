@@ -13,7 +13,7 @@ const Header = () => {
   const fetchUserDetails = async (userId) => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/clients/users/${userId}`,
+        `${import.meta.env.VITE_API_URL}/users/${userId}`,
         {
           method: "GET",
           headers: {
