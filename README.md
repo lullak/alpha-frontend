@@ -10,5 +10,4 @@ Integration with a backend API for data management.
 
 # Technologies Used
 Frontend: React.js
-Styling: CSS/SCSS
 API Communication: Fetch API
