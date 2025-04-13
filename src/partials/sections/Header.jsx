@@ -12,12 +12,15 @@ const Header = () => {
 
   const fetchUserDetails = async (userId) => {
     try {
-      const res = await fetch(`https://localhost:7030/api/users/${userId}`, {
-        method: "GET",
-        headers: {
-          "X-API-KEY": import.meta.env.VITE_X_API_KEY,
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/clients/users/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+          },
+        }
+      );
 
       if (!res.ok) {
         console.error(
