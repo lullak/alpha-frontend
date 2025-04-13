@@ -14,13 +14,16 @@ const UserCards = ({ user, onEdit, onDelete }) => {
   };
 
   const handleDelete = async () => {
-    const res = await fetch(`https://localhost:7030/api/users/${user.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": import.meta.env.VITE_X_API_KEY,
-      },
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/users/${user.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-KEY": import.meta.env.VITE_X_API_KEY,
+        },
+      }
+    );
 
     if (res.ok) {
       onDelete(user.id);

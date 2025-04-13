@@ -15,7 +15,7 @@ const ProjectCards = ({ project, onEdit, onDelete }) => {
 
   const handleDelete = async () => {
     const res = await fetch(
-      `https://localhost:7030/api/projects/${project.id}`,
+      `${import.meta.env.VITE_API_URL}/projects/${project.id}`,
       {
         method: "DELETE",
         headers: {
