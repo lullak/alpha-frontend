@@ -64,7 +64,7 @@ const Members = () => {
   };
 
   const getUsers = async () => {
-    const res = await fetch("https://localhost:7030/api/users", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
       method: "GET",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
@@ -120,7 +120,7 @@ const Members = () => {
     } else if (newUser.image && newUser.image !== fallbackImage) {
       formData.append("Image", newUser.image);
     }
-    const res = await fetch(`https://localhost:7030/api/users`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
       method: "PUT",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
@@ -170,7 +170,7 @@ const Members = () => {
       formData.append("Image", newUser.imageFile);
     }
 
-    const res = await fetch("https://localhost:7030/api/users", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
       method: "POST",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,

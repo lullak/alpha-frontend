@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const signUp = async (formData) => {
-    const res = await fetch("https://localhost:7030/api/signup", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signIn = async (email, password, isPersistent = false) => {
-    const res = await fetch("https://localhost:7030/api/signin", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

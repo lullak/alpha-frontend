@@ -31,7 +31,7 @@ const Projects = () => {
   // api fetches
 
   const getProjects = async () => {
-    const res = await fetch("https://localhost:7030/api/projects", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`, {
       method: "GET",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
@@ -44,7 +44,7 @@ const Projects = () => {
   };
 
   const getClients = async () => {
-    const res = await fetch("https://localhost:7030/api/clients", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/clients`, {
       method: "GET",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
@@ -57,7 +57,7 @@ const Projects = () => {
   };
 
   const getUsers = async () => {
-    const res = await fetch("https://localhost:7030/api/users", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
       method: "GET",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
@@ -138,7 +138,7 @@ const Projects = () => {
     formData.append("StatusId", newProject.statusId || 1);
     formData.append("Created", newProject.created || "");
 
-    const res = await fetch("https://localhost:7030/api/Projects", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`, {
       method: "PUT",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
@@ -205,7 +205,7 @@ const Projects = () => {
     formData.append("UserId", newProject.userId);
     formData.append("Created", newProject.created || new Date().toISOString());
 
-    const res = await fetch("https://localhost:7030/api/projects", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`, {
       method: "POST",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,

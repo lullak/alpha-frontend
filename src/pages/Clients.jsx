@@ -28,7 +28,7 @@ const Clients = () => {
   }
 
   const getClients = async () => {
-    const res = await fetch("https://localhost:7030/api/clients", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/clients`, {
       method: "GET",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
@@ -120,7 +120,7 @@ const Clients = () => {
       formData.append("ClientImage", newClient.clientImage);
     }
 
-    const res = await fetch("https://localhost:7030/api/Clients", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/clients`, {
       method: "PUT",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
@@ -192,7 +192,7 @@ const Clients = () => {
       formData.append("ClientImage", newClient.clientImageFile);
     }
 
-    const res = await fetch("https://localhost:7030/api/clients", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/clients`, {
       method: "POST",
       headers: {
         "X-API-KEY": import.meta.env.VITE_X_API_KEY,
