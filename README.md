@@ -10,4 +10,3 @@
 
 # Technologies Used
 - Frontend: React.js
-- API Communication: Fetch API
